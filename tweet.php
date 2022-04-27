@@ -8,7 +8,7 @@ if(!empty($_REQUEST['submission']) && !empty($_REQUEST['uname'])) {
     $submission = $_REQUEST['submission'];
     $uname = $_REQUEST['uname'];
     // Banned word check
-    if(in_array($submission, $bannedWords)) {
+    if(in_array(strtolower($submission), $bannedWords)) {
         unset($submission); unset($uname);
         echo "Your submission contains a banned word. Please try again.";
     } else {
