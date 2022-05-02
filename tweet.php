@@ -3,6 +3,8 @@
 session_start();
 require_once "api.php";
 require_once "banned.php";
+require_once "vendor/autoload.php";
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 if(!empty($_REQUEST['submission']) && !empty($_REQUEST['uname'])) {
     $submission = $_REQUEST['submission'];
@@ -15,41 +17,34 @@ if(!empty($_REQUEST['submission']) && !empty($_REQUEST['uname'])) {
         $submission = htmlentities($_REQUEST['submission']);
         $uname = htmlentities($_REQUEST['uname']);
         $tweet = htmlentities("$submission - @$uname");
-        // Post to Twitter with API
-        $ch = curl_init();
-        $url = "https://api.twitter.com/1.1/statuses/update.json";
-        $postfields = array(
-            'status' => $tweet
-        );
-        $headers = array(
-            'Authorization: Bearer ' . $bearerToken
-        );
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        $result = json_decode($result, true);
-        if(!empty($result['errors'])) {
+        // Post to Twitter with Abraham\TwitterOAuth
+        // Define Keys
+        define('CONSUMER_KEY', $apiKey);
+        define('CONSUMER_SECRET', $apiKeySecret);
+        define('ACCESS_TOKEN', $accessToken);
+        define('ACCESS_TOKEN_SECRET', $accessTokenSecret);
+        // Make Connection & Tweet
+        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+        $result = $connection->post("statuses/update", ["status" => $tweet]);
+        if($connection->getLastHttpCode() != 200) {
             // HTTP Error
             ?>
             <head><title>Unexpected Error</title><style>body {padding-top: 200px;padding-left: 200px;padding-right:200px;background-color: black;color: white;} div.b {word-wrap: break-word;color: red;}a {color: white;}a:hover {background-color: red;}a:visited {text-decoration: none;color: white;}</style></head>
             <body>
                 <center>
                     <!-- Recovery -->
-                    <p>An unrecoverable error has occured.<br>If you're a regular user, please DM me on <a href="https://twitter.com:443/">Twitter</a> with the following error code:<br><div class="b">ERROR NO. <?php echo base64_encode($result['errors'][0]['message']);?></div><br><br><?php die("\nDie() called. PHP terminated."); unset($submission); unset($uname)?></p><br><br>
+                    <p>An unrecoverable error has occured.<br>If you're a regular user, please DM me on <a href="https://twitter.com:443/">Twitter</a> with the following error code:<br><div class="b">ERROR NO. <?php echo base64_encode($result->errors[0]->message);?></div><br><br><?php die("\nDie() called. PHP terminated."); unset($submission); unset($uname); session_destroy()?></p><br><br>
                 </center>
             </body>
             <?php
         } else {
             // Success
             ?>
-            <head><title>tweetCky</title><style>body {padding-top: 200px;padding-left: 200px;padding-right:200px;background-color: black;color: white;} div.b {word-wrap: break-word;color: red;}a {color: white;}a:hover {background-color: red;}a:visited {text-decoration: none;color: white;}</style></head>
+            <head><title>tweet</title><style>body {;padding-top: 200px;padding-left: 200px;padding-right:200px;background-color: black;color: white;}div.a {color: #32CD32}a {color: white;}a:hover {background-color: red;}a:visited {text-decoration: none;color: white;}</style></head>
             <body>
             <center>
-                <p><b>Successfully posted to Twitter!<br><a href="https://twitter.com:443/">Checkout your tweet here</a></b></p>
+                <p><div class="a"><b>Successfully posted to Twitter!</div><br><a href="https://twitter.com:443/">Checkout your tweet here</a></b></p>
+                <?php unset($submission); unset($uname); unset($tweet); session_destroy(); ?>
                 <p><a href="index.php">Post Another?</a></p>
             </center>
             </body>
@@ -62,7 +57,7 @@ if(!empty($_REQUEST['submission']) && !empty($_REQUEST['uname'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>tweetCky</title>
+    <title>tweet</title>
     <style>
         body {padding-top: 200px;background-color: black;color: white;}
     </style>
