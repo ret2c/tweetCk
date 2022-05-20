@@ -9,3 +9,9 @@ Use composer to install:
 ```
 composer require abraham\twitteroauth
 ```
+
+Run locally to test/configure:
+```
+tweetCky [main] » php -S localhost:8000
+#Navigate to http://localhost:8000, port number is arbitrary
+```
