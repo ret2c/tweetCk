@@ -79,8 +79,8 @@ if(!empty($_REQUEST['submission']) && !empty($_REQUEST['uname'])) {
     <p>todo: make website look pretty :)</p>
 
     <form method="POST">
-    <p><b>Input submission:</b><br>max character length: <b>263</b></p>
-    <textarea type="text" rows="5" cols="60" name="submission" maxlength="263" required></textarea>
+    <p><b>Input submission:</b><br>max character length: <b>262</b></p>
+    <textarea type="text" rows="5" cols="60" name="submission" maxlength="262" required></textarea>
     <p><b>Input Twitter username:</b><br>no special characters allowed</p>
     <input type="text" name="uname" value="" placeholder="twitterUsername" pattern="[a-zA-Z0-9]+" minlength="4" maxlength="15" required>
     <br><br>
