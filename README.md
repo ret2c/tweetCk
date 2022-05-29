@@ -5,7 +5,7 @@ This project is barely maintained, finished in about a day. Just wanted to creat
 There are many opportunities for a user to abuse this app, shouldn't be anything to take serious :)
 
 Utilizes [TwitterOAuth](https://github.com/abraham/twitteroauth-com) by [Abraham](https://github.com/abraham)<br>
-Use composer to install:
+Use composer (within same directory) to install:
 ```
 composer require abraham\twitteroauth
 ```
