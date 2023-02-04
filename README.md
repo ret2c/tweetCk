@@ -1,4 +1,8 @@
-# tweetCky
+# 02/03/2023 Update:
+Twitter is [suspending its free API access](https://twitter.com/TwitterDev/status/1621026986784337922) on 02/09/2023.<br>
+This repository is now archived, was a fun project while it lasted. Thank you!
+
+## tweetCky
 Simple PHP application where users can input a submission and have it be tweeted from my account.
 
 This project is barely maintained, finished in about a day. Just wanted to create a cloud backup just in case I decide to take it further.
